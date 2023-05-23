@@ -1,0 +1,888 @@
+Sub Кнопка2_Щелчок()
+ThisWorkbook.Worksheets(1).Unprotect Password:="0000"
+
+'Сохраняем файл
+If ThisWorkbook.Saved = False Then
+    ThisWorkbook.Save
+End If
+
+'Лист №1 в массив
+    lastRow = ThisWorkbook.Worksheets(1).Cells.SpecialCells(xlCellTypeLastCell).Row
+    myArray = ThisWorkbook.Worksheets(1).Range("A1:AA" & lastRow)
+    
+'Кол-во строк на Лист №2
+    lastRow2 = ThisWorkbook.Worksheets(2).Cells.SpecialCells(xlCellTypeLastCell).Row
+    
+'Очистим Лист №2
+    'On Error Resume Next
+    ThisWorkbook.Worksheets(2).Range("A22:I" & lastRow + 100).Cells.Clear
+    ThisWorkbook.Worksheets(2).Range("A1:I" & lastRow + 100).Cells.Interior.ColorIndex = 2
+    'ThisWorkbook.Worksheets(2).Range("A1:I" & lastRow + 100).Borders.LineStyle = xlNone
+    'ThisWorkbook.Worksheets(2).Range("A1:I" & lastRow + 100).Borders.Weight = xlThin
+    'ThisWorkbook.Worksheets(2).Range("A1:I" & lastRow + 100).Borders.ColorIndex = 15
+    
+
+    'On Error GoTo 0
+    
+    Dim myArray_bg, lr As Long, lc As Long
+    ReDim myArray_bg(1 To lastRow, 1 To 25)
+    
+ 'Цвета в массив
+    For lr = 1 To lastRow
+        For lc = 1 To 25
+            myArray_bg(lr, lc) = ThisWorkbook.Worksheets(1).Range("A1:Y" & lastRow).Cells(lr, lc).Interior.Color
+        Next
+    Next
+    
+    nom_akt = ""
+    data_akt = ""
+    nom = 22
+    nom_pp = 1
+    sklad = ""
+    st = ""
+    gruz = ""
+    Post = ""
+    vagon = ""
+    ttd = ""
+    data_r = ""
+    p6 = ""
+    p7 = ""
+    p8 = ""
+    p9 = ""
+    
+    nom_akt1 = ""
+    data_akt1 = ""
+    nom1 = 22
+    nom_pp1 = 1
+    sklad1 = ""
+    st1 = ""
+    gruz1 = ""
+    Post1 = ""
+    vagon1 = ""
+    ttd1 = ""
+    data_r1 = ""
+    p61 = ""
+    p71 = ""
+    p81 = ""
+    p91 = ""
+    
+    'Основной цикл
+    For i = 1 To lastRow
+    If myArray_bg(i, 1) = 16777215 Then
+    Else
+    
+       str_error = 0
+    
+       'Данные для шапки
+       If data_akt = "" Then
+        data_akt = "" & myArray(i, 4)
+       Else
+        arr = Split(data_akt, ",")
+        naiden = 0
+        For j = 0 To UBound(arr)
+            If arr(j) = "" & myArray(i, 4) Then
+                naiden = 1
+            End If
+        Next j
+        If naiden = 0 Then
+           If data_akt <> "" Then
+           MsgBox ("ВНИМАНИЕ! Даты разные в выделенной области!Проверьте корректность заполнения акта!!!")
+           data_akt1 = 1
+           str_error = 1
+           End If
+           data_akt = data_akt & "," & myArray(i, 4)
+        End If
+       End If
+       
+       If nom_akt = "" Then
+        nom_akt = "" & myArray(i, 3)
+       Else
+        arr = Split(nom_akt, ",")
+        naiden = 0
+        For j = 0 To UBound(arr)
+            If arr(j) = "" & myArray(i, 3) Then
+                naiden = 1
+            End If
+        Next j
+        If naiden = 0 Then
+           If nom_akt <> "" Then
+           MsgBox ("ВНИМАНИЕ! Номера актов разные в выделенной области!Проверьте корректность заполнения акта!!!!")
+           nom_akt1 = 1
+           str_error = 1
+           End If
+           nom_akt = nom_akt & "," & myArray(i, 3)
+        End If
+       End If
+       
+       If sklad = "" Then
+        sklad = "" & myArray(i, 6)
+       Else
+        arr = Split(sklad, ",")
+        naiden = 0
+        For j = 0 To UBound(arr)
+            If arr(j) = "" & myArray(i, 6) Then
+                naiden = 1
+            End If
+        Next j
+        If naiden = 0 Then
+           If sklad <> "" Then
+           MsgBox ("ВНИМАНИЕ! Склады разные в выделенной области!Проверьте корректность заполнения акта!!!!")
+           sklad1 = 1
+           str_error = 1
+           End If
+           sklad = sklad & "," & myArray(i, 6)
+        End If
+       End If
+       
+       If st = "" Then
+        st = myArray(i, 10)
+       Else
+        arr = Split(st, ",")
+        naiden = 0
+        For j = 0 To UBound(arr)
+            If arr(j) = myArray(i, 10) Then
+                naiden = 1
+            End If
+        Next j
+        If naiden = 0 Then
+           If st <> "" Then
+           MsgBox ("ВНИМАНИЕ! Станции разные в выделенной области!Проверьте корректность заполнения акта!!!!")
+           st1 = 1
+           str_error = 1
+           End If
+           st = st + "," + myArray(i, 10)
+        End If
+       End If
+       
+       If gruz = "" Then
+        gruz = "" & myArray(i, 11)
+       Else
+        arr = Split(gruz, ",")
+        naiden = 0
+        For j = 0 To UBound(arr)
+            If arr(j) = "" & myArray(i, 11) Then
+                naiden = 1
+            End If
+        Next j
+        If naiden = 0 Then
+           If gruz <> "" Then
+           MsgBox ("ВНИМАНИЕ! Грузоотправители разные в выделенной области!Проверьте корректность заполнения акта!!!!")
+           gruz1 = 1
+           str_error = 1
+           End If
+           gruz = gruz & "," & myArray(i, 11)
+        End If
+       End If
+       
+       If Post = "" Then
+        Post = "" & myArray(i, 12)
+       Else
+        arr = Split(Post, ",")
+        naiden = 0
+        For j = 0 To UBound(arr)
+            If arr(j) = "" & myArray(i, 12) Then
+                naiden = 1
+            End If
+        Next j
+        If naiden = 0 Then
+           If Post <> "" Then
+           MsgBox ("ВНИМАНИЕ! Поставщики разные в выделенной области!Проверьте корректность заполнения акта!!!!")
+           Post1 = 1
+           str_error = 1
+           End If
+           Post = Post & "," & myArray(i, 12)
+        End If
+       End If
+       
+       If vagon = "" Then
+        vagon = "" & myArray(i, 13)
+       Else
+        arr = Split(vagon, "_")
+        naiden = 0
+        For j = 0 To UBound(arr)
+            If arr(j) = "" & myArray(i, 13) Then
+                naiden = 1
+            End If
+        Next j
+        If naiden = 0 Then
+           If vagon <> "" Then
+           MsgBox ("ВНИМАНИЕ! Вагоны разные в выделенной области!Проверьте корректность заполнения акта!!!!")
+           vagon1 = 1
+           str_error = 1
+           End If
+           vagon = vagon & "_" & myArray(i, 13)
+        End If
+       End If
+       
+       If ttd = "" Then
+        ttd = myArray(i, 14) & " " & myArray(i, 15)
+       Else
+        arr = Split(ttd, ",")
+        naiden = 0
+        For j = 0 To UBound(arr)
+            If arr(j) = myArray(i, 14) & " " & myArray(i, 15) Then
+                naiden = 1
+            End If
+        Next j
+        If naiden = 0 Then
+           ttd = ttd + "," + myArray(i, 14) & " " & myArray(i, 15)
+        End If
+       End If
+       
+       If data_r = "" Then
+        data_r = "" & myArray(i, 16)
+       Else
+        arr = Split(data_r, ",")
+        naiden = 0
+        For j = 0 To UBound(arr)
+            If arr(j) = "" & myArray(i, 16) Then
+                naiden = 1
+            End If
+        Next j
+        If naiden = 0 Then
+           If data_r <> "" Then
+           MsgBox ("ВНИМАНИЕ! Даты раскредитации разные в выделенной области!Проверьте корректность заполнения акта!!!!")
+           data_r1 = 1
+           str_error = 1
+           End If
+           data_r = data_r & "," & myArray(i, 16)
+        End If
+       End If
+       
+       If nom_a = "" Then
+        nom_a = "" & myArray(i, 3)
+       Else
+        arr = Split(nom_a, ",")
+        naiden = 0
+        For j = 0 To UBound(arr)
+            If arr(j) = "" & myArray(i, 3) Then
+                naiden = 1
+            End If
+        Next j
+        If naiden = 0 Then
+           nom_a = "" & nom_a & "," & myArray(i, 3)
+        End If
+       End If
+       
+       If p6 = "" Then
+        p6 = "" & myArray(i, 21)
+       Else
+        arr = Split(p6, ",")
+        naiden = 0
+        For j = 0 To UBound(arr)
+            If arr(j) = "" & myArray(i, 21) Then
+                naiden = 1
+            End If
+        Next j
+        If naiden = 0 Then
+           If p6 <> "" Then
+           'MsgBox ("Тест")
+           p61 = 1
+           'str_error = 1
+           End If
+           p6 = p6 & "," & myArray(i, 21)
+        End If
+       End If
+       
+       If p7 = "" Then
+        p7 = "" & myArray(i, 7)
+       Else
+        arr = Split(p7, ",")
+        naiden = 0
+        For j = 0 To UBound(arr)
+            If arr(j) = "" & myArray(i, 7) Then
+                naiden = 1
+            End If
+        Next j
+        If naiden = 0 Then
+           If p7 <> "" Then
+           MsgBox ("ВНИМАНИЕ! Приемосдатчики разные в выделенной области!Проверьте корректность заполнения акта!!!!")
+           p71 = 1
+           str_error = 1
+           End If
+           p7 = p7 & "," & myArray(i, 7)
+        End If
+       End If
+       
+        If p8 = "" Then
+        p8 = "" & myArray(i, 8)
+       Else
+        arr = Split(p8, ",")
+        naiden = 0
+        For j = 0 To UBound(arr)
+            If arr(j) = "" & myArray(i, 8) Then
+                naiden = 1
+            End If
+        Next j
+        If naiden = 0 Then
+           If p8 <> "" Then
+           MsgBox ("ВНИМАНИЕ! Зав складом разные в выделенной области!Проверьте корректность заполнения акта!!!!")
+           p81 = 1
+           str_error = 1
+           End If
+           p8 = p8 & "," & myArray(i, 8)
+        End If
+       End If
+       
+        If p9 = "" Then
+        p9 = "" & myArray(i, 9)
+       Else
+        arr = Split(p9, ",")
+        naiden = 0
+        For j = 0 To UBound(arr)
+            If arr(j) = "" & myArray(i, 9) Then
+                naiden = 1
+            End If
+        Next j
+        If naiden = 0 Then
+           If p9 <> "" Then
+           MsgBox ("ВНИМАНИЕ! Инженеры разные в выделенной области!Проверьте корректность заполнения акта!!!!")
+           p91 = 1
+           str_error = 1
+           End If
+           p9 = p9 & "," & myArray(i, 9)
+        End If
+       End If
+       
+       'Данные строк
+       
+       ThisWorkbook.Worksheets(2).Range("A" & nom) = nom_pp
+       ThisWorkbook.Worksheets(2).Range("A" & nom).Borders.LineStyle = True
+       
+       'объяденение ячеек
+       ThisWorkbook.Worksheets(2).Range("B" & nom & ":" & "F" & nom).Merge
+       'перенос по словам
+       ThisWorkbook.Worksheets(2).Range("B" & nom).WrapText = True
+       ThisWorkbook.Worksheets(2).Range("B" & nom) = myArray(i, 17)
+       ThisWorkbook.Worksheets(2).Range("B" & nom & ":" & "F" & nom).Borders.LineStyle = True
+       
+       
+       ThisWorkbook.Worksheets(2).Range("G" & nom) = myArray(i, 18)
+       ThisWorkbook.Worksheets(2).Range("G" & nom).Borders.LineStyle = True
+       
+       'ThisWorkbook.Worksheets(2).Range("H" & nom & ":" & "I" & nom).Merge
+       'ThisWorkbook.Worksheets(2).Range("H" & nom) = myArray(i, 19)
+       'ThisWorkbook.Worksheets(2).Range("H" & nom & ":" & "I" & nom).Borders.LineStyle = True
+       
+       'ThisWorkbook.Worksheets(2).Range("H" & nom & ":" & "I" & nom).Merge
+       ThisWorkbook.Worksheets(2).Range("H" & nom) = myArray(i, 19)
+       ThisWorkbook.Worksheets(2).Range("H" & nom).Borders.LineStyle = True
+       
+       ThisWorkbook.Worksheets(2).Range("I" & nom) = myArray(i, 20)
+       ThisWorkbook.Worksheets(2).Range("I" & nom).Borders.LineStyle = True
+       
+       ThisWorkbook.Worksheets(2).Range("J" & nom) = myArray(i, 22)
+       ThisWorkbook.Worksheets(2).Range("J" & nom).Borders.LineStyle = True
+       ThisWorkbook.Worksheets(2).Range("J" & nom).WrapText = True
+       
+       
+       If str_error = 1 Then
+        'ThisWorkbook.Worksheets(2).Range("A" & nom & ":" & "I" & nom).Interior.Color = 255
+       End If
+       
+       
+       nom = nom + 1
+       nom_pp = nom_pp + 1
+       
+    End If
+    Next i
+    
+    On Error Resume Next
+
+    'Заполняем шапку
+
+    
+    ThisWorkbook.Worksheets(2).Range("D4") = sklad
+    If sklad1 = 1 Then
+        ThisWorkbook.Worksheets(2).Range("D4" & ":" & "I4").Interior.Color = 255
+    End If
+    ThisWorkbook.Worksheets(2).Range("D6") = st
+    If st1 = 1 Then
+        ThisWorkbook.Worksheets(2).Range("D6" & ":" & "I6").Interior.Color = 255
+    End If
+    ThisWorkbook.Worksheets(2).Range("D8") = gruz
+    If gruz1 = 1 Then
+        ThisWorkbook.Worksheets(2).Range("D8" & ":" & "I8").Interior.Color = 255
+    End If
+    ThisWorkbook.Worksheets(2).Range("D10") = Post
+    If Post1 = 1 Then
+        ThisWorkbook.Worksheets(2).Range("D10" & ":" & "I10").Interior.Color = 255
+    End If
+    ThisWorkbook.Worksheets(2).Range("D12") = vagon
+    If vagon1 = 1 Then
+        ThisWorkbook.Worksheets(2).Range("D12" & ":" & "I12").Interior.Color = 255
+    End If
+    ThisWorkbook.Worksheets(2).Range("D16") = ttd
+    ThisWorkbook.Worksheets(2).Range("D18") = data_r
+    If data_r1 = 1 Then
+        ThisWorkbook.Worksheets(2).Range("D18" & ":" & "I18").Interior.Color = 255
+    End If
+    
+    ThisWorkbook.Worksheets(2).Range("G1") = nom_akt
+    If nom_akt1 = 1 Then
+        ThisWorkbook.Worksheets(2).Range("G1" & ":" & "H1").Interior.Color = 255
+    End If
+    ThisWorkbook.Worksheets(2).Range("D2") = "от " & data_akt & " г."
+    If data_akt1 = 1 Then
+        ThisWorkbook.Worksheets(2).Range("D2" & ":" & "I2").Interior.Color = 255
+    End If
+    On Error GoTo 0
+    
+    'Заполняем подвал
+    nom = nom + 2
+    ThisWorkbook.Worksheets(2).Range("A" & nom) = "ВНИМАНИЕ!"
+    'ThisWorkbook.Worksheets(2).Range("D" & nom & ":" & "F" & nom).Borders(xlEdgeBottom).Weight = xlThin
+    ThisWorkbook.Worksheets(2).Range("D" & nom) = p6
+    'If p61 = 1 Then
+        'ThisWorkbook.Worksheets(2).Range("G" & nom).Interior.Color = 255
+    'End If
+    
+    nom = nom + 2
+    ThisWorkbook.Worksheets(2).Range("A" & nom) = "Приемосдатчик"
+    ThisWorkbook.Worksheets(2).Range("D" & nom & ":" & "F" & nom).Borders(xlEdgeBottom).Weight = xlThin
+    ThisWorkbook.Worksheets(2).Range("G" & nom) = p7
+    If p71 = 1 Then
+        ThisWorkbook.Worksheets(2).Range("G" & nom).Interior.Color = 255
+    End If
+    
+    nom = nom + 2
+    ThisWorkbook.Worksheets(2).Range("A" & nom) = "Заведующий складом"
+    ThisWorkbook.Worksheets(2).Range("D" & nom & ":" & "F" & nom).Borders(xlEdgeBottom).Weight = xlThin
+    ThisWorkbook.Worksheets(2).Range("G" & nom) = p8
+    If p81 = 1 Then
+        ThisWorkbook.Worksheets(2).Range("G" & nom).Interior.Color = 255
+    End If
+    
+    nom = nom + 2
+    ThisWorkbook.Worksheets(2).Range("A" & nom) = "Инженер"
+    ThisWorkbook.Worksheets(2).Range("D" & nom & ":" & "F" & nom).Borders(xlEdgeBottom).Weight = xlThin
+    ThisWorkbook.Worksheets(2).Range("G" & nom) = p9
+    If p91 = 1 Then
+        ThisWorkbook.Worksheets(2).Range("G" & nom).Interior.Color = 255
+    End If
+    
+    
+    
+'Ставим защиту на лист
+ThisWorkbook.Worksheets(1).Protect Password:="0000", AllowFormattingColumns:=True, AllowFormattingCells:=True, AllowFormattingRows:=True, AllowSorting:=True, AllowFiltering:=True, AllowInsertingRows:=True, AllowDeletingRows:=True
+
+End Sub
+
+Sub Кнопка3_Щелчок()
+'Запишем
+If ThisWorkbook.Saved = False Then
+    ThisWorkbook.Save
+End If
+
+'Лист №1 в массив
+    lastRow = ThisWorkbook.Worksheets(1).Cells.SpecialCells(xlCellTypeLastCell).Row
+    myArray = ThisWorkbook.Worksheets(1).Range("A1:AA" & lastRow)
+    
+'Кол-во строк на Лист №2
+    lastRow2 = ThisWorkbook.Worksheets(3).Cells.SpecialCells(xlCellTypeLastCell).Row
+    
+'Очистим Лист №2
+    On Error Resume Next
+    ThisWorkbook.Worksheets(3).Range("A10:O" & lastRow + 100).Cells.Clear
+    ThisWorkbook.Worksheets(3).Range("A1:O" & lastRow + 100).Cells.Interior.ColorIndex = 2
+    
+    On Error GoTo 0
+    
+    Dim myArray_bg, lr As Long, lc As Long
+    ReDim myArray_bg(1 To lastRow, 1 To 25)
+    
+ 'Цвета в массив
+    For lr = 1 To lastRow
+        For lc = 1 To 25
+            myArray_bg(lr, lc) = ThisWorkbook.Worksheets(1).Range("A1:Y" & lastRow).Cells(lr, lc).Interior.Color
+        Next
+    Next
+    
+    nom_akt = ""
+    data_akt = ""
+     nom = 10
+    nom_pp = 1
+    sklad = ""
+    st = ""
+    gruz = ""
+    Post = ""
+    vagon = ""
+    ttd = ""
+    data_r = ""
+    p7 = ""
+    p8 = ""
+    p9 = ""
+    
+    
+    nom_akt1 = ""
+    data_akt1 = ""
+    nom1 = 22
+    nom_pp1 = 1
+    sklad1 = ""
+    st1 = ""
+    gruz1 = ""
+    Post1 = ""
+    vagon1 = ""
+    ttd1 = ""
+    data_r1 = ""
+    p71 = ""
+    p81 = ""
+    p91 = ""
+    
+    'Основной цикл
+    For i = 1 To lastRow
+    If myArray_bg(i, 1) = 16777215 Then
+    Else
+    
+       str_error = 0
+    
+       'Данные для шапки
+       If data_akt = "" Then
+        data_akt = "" & myArray(i, 4)
+       Else
+        arr = Split(data_akt, ",")
+        naiden = 0
+        For j = 0 To UBound(arr)
+            If arr(j) = "" & myArray(i, 4) Then
+                naiden = 1
+            End If
+        Next j
+        If naiden = 0 Then
+           If data_akt <> "" Then
+           MsgBox ("ВНИМАНИЕ! Даты разные в выделенной области!Проверьте корректность заполнения акта!!!!")
+           data_akt1 = 1
+           str_error = 1
+           End If
+           data_akt = data_akt & "," & myArray(i, 4)
+        End If
+       End If
+       
+       If nom_akt = "" Then
+        nom_akt = "" & myArray(i, 3)
+       Else
+        arr = Split(nom_akt, ",")
+        naiden = 0
+        For j = 0 To UBound(arr)
+            If arr(j) = "" & myArray(i, 3) Then
+                naiden = 1
+            End If
+        Next j
+        If naiden = 0 Then
+           If nom_akt <> "" Then
+           MsgBox ("ВНИМАНИЕ! Номера актов разные в выделенной области!Проверьте корректность заполнения акта!!!!")
+           nom_akt1 = 1
+           str_error = 1
+           End If
+           nom_akt = nom_akt & "," & myArray(i, 3)
+        End If
+       End If
+       
+       If sklad = "" Then
+        sklad = "" & myArray(i, 6)
+       Else
+        arr = Split(sklad, ",")
+        naiden = 0
+        For j = 0 To UBound(arr)
+            If arr(j) = "" & myArray(i, 6) Then
+                naiden = 1
+            End If
+        Next j
+        If naiden = 0 Then
+           If sklad <> "" Then
+           MsgBox ("ВНИМАНИЕ! Склады разные в выделенной области!Проверьте корректность заполнения акта!!!!")
+           sklad1 = 1
+           str_error = 1
+           End If
+           sklad = sklad & "," & myArray(i, 6)
+        End If
+       End If
+       
+       If st = "" Then
+        st = myArray(i, 10)
+       Else
+        arr = Split(st, ",")
+        naiden = 0
+        For j = 0 To UBound(arr)
+            If arr(j) = myArray(i, 10) Then
+                naiden = 1
+            End If
+        Next j
+        If naiden = 0 Then
+           If st <> "" Then
+           MsgBox ("ВНИМАНИЕ! Станции разные в выделенной области!Проверьте корректность заполнения акта!!!!")
+           st1 = 1
+           str_error = 1
+           End If
+           st = st + "," + myArray(i, 10)
+        End If
+       End If
+       
+       If gruz = "" Then
+        gruz = "" & myArray(i, 11)
+       Else
+        arr = Split(gruz, ",")
+        naiden = 0
+        For j = 0 To UBound(arr)
+            If arr(j) = "" & myArray(i, 11) Then
+                naiden = 1
+            End If
+        Next j
+        If naiden = 0 Then
+           If gruz <> "" Then
+           MsgBox ("ВНИМАНИЕ! Грузоотправители разные в выделенной области!Проверьте корректность заполнения акта!!!!")
+           gruz1 = 1
+           str_error = 1
+           End If
+           gruz = gruz & "," & myArray(i, 11)
+        End If
+       End If
+       
+       If Post = "" Then
+        Post = "" & myArray(i, 12)
+       Else
+        arr = Split(Post, ",")
+        naiden = 0
+        For j = 0 To UBound(arr)
+            If arr(j) = "" & myArray(i, 12) Then
+                naiden = 1
+            End If
+        Next j
+        If naiden = 0 Then
+           If Post <> "" Then
+           MsgBox ("ВНИМАНИЕ! Поставщики разные в выделенной области!Проверьте корректность заполнения акта!!!!")
+           Post1 = 1
+           str_error = 1
+           End If
+           Post = Post & "," & myArray(i, 12)
+        End If
+       End If
+       
+       If vagon = "" Then
+        vagon = "" & myArray(i, 13)
+       Else
+        arr = Split(vagon, "_")
+        naiden = 0
+        For j = 0 To UBound(arr)
+            If arr(j) = "" & myArray(i, 13) Then
+                naiden = 1
+            End If
+        Next j
+        If naiden = 0 Then
+           If vagon <> "" Then
+           MsgBox ("ВНИМАНИЕ! Вагоны разные в выделенной области!Проверьте корректность заполнения акта!!!!")
+           vagon1 = 1
+           str_error = 1
+           End If
+           vagon = vagon & "_" & myArray(i, 13)
+        End If
+       End If
+       
+       If ttd = "" Then
+        ttd = myArray(i, 14) & " " & myArray(i, 15)
+       Else
+        arr = Split(ttd, ",")
+        naiden = 0
+        For j = 0 To UBound(arr)
+            If arr(j) = myArray(i, 14) & " " & myArray(i, 15) Then
+                naiden = 1
+            End If
+        Next j
+        If naiden = 0 Then
+           ttd = ttd + "," + myArray(i, 14) & " " & myArray(i, 15)
+        End If
+       End If
+       
+       If data_r = "" Then
+        data_r = "" & myArray(i, 16)
+       Else
+        arr = Split(data_r, ",")
+        naiden = 0
+        For j = 0 To UBound(arr)
+            If arr(j) = "" & myArray(i, 16) Then
+                naiden = 1
+            End If
+        Next j
+        If naiden = 0 Then
+           If data_r <> "" Then
+           MsgBox ("ВНИМАНИЕ! Даты раскредитации разные в выделенной области!Проверьте корректность заполнения акта!!!!")
+           data_r1 = 1
+           str_error = 1
+           End If
+           data_r = data_r & "," & myArray(i, 16)
+        End If
+       End If
+       
+       If nom_a = "" Then
+        nom_a = "" & myArray(i, 3)
+       Else
+        arr = Split(nom_a, ",")
+        naiden = 0
+        For j = 0 To UBound(arr)
+            If arr(j) = "" & myArray(i, 3) Then
+                naiden = 1
+            End If
+        Next j
+        If naiden = 0 Then
+           nom_a = "" & nom_a & "," & myArray(i, 3)
+        End If
+       End If
+       
+       If p7 = "" Then
+        p7 = "" & myArray(i, 7)
+       Else
+        arr = Split(p7, ",")
+        naiden = 0
+        For j = 0 To UBound(arr)
+            If arr(j) = "" & myArray(i, 7) Then
+                naiden = 1
+            End If
+        Next j
+        If naiden = 0 Then
+           If p7 <> "" Then
+           MsgBox ("ВНИМАНИЕ! Приемосдатчики разные в выделенной области!Проверьте корректность заполнения акта!!!!")
+           p71 = 1
+           str_error = 1
+           End If
+           p7 = p7 & "," & myArray(i, 7)
+        End If
+       End If
+       
+        If p8 = "" Then
+        p8 = "" & myArray(i, 8)
+       Else
+        arr = Split(p8, ",")
+        naiden = 0
+        For j = 0 To UBound(arr)
+            If arr(j) = "" & myArray(i, 8) Then
+                naiden = 1
+            End If
+        Next j
+        If naiden = 0 Then
+           If p8 <> "" Then
+           MsgBox ("ВНИМАНИЕ! Зав складом разные в выделенной области!Проверьте корректность заполнения акта!!!!")
+           p81 = 1
+           str_error = 1
+           End If
+           p8 = p8 & "," & myArray(i, 8)
+        End If
+       End If
+       
+        If p9 = "" Then
+        p9 = "" & myArray(i, 9)
+       Else
+        arr = Split(p9, ",")
+        naiden = 0
+        For j = 0 To UBound(arr)
+            If arr(j) = "" & myArray(i, 9) Then
+                naiden = 1
+            End If
+        Next j
+        If naiden = 0 Then
+           If p9 <> "" Then
+           MsgBox ("ВНИМАНИЕ! Инженеры разные в выделенной области!Проверьте корректность заполнения акта!!!!")
+           p91 = 1
+           str_error = 1
+           End If
+           p9 = p9 & "," & myArray(i, 9)
+        End If
+       End If
+          
+       'Данные строк
+       ThisWorkbook.Worksheets(3).Range("A" & nom) = nom_pp
+       ThisWorkbook.Worksheets(3).Range("A" & nom).Borders.LineStyle = True
+       
+       ThisWorkbook.Worksheets(3).Range("B" & nom & ":" & "D" & nom).Merge
+       ThisWorkbook.Worksheets(3).Range("B" & nom) = myArray(i, 17)
+       ThisWorkbook.Worksheets(3).Range("B" & nom & ":" & "D" & nom).Borders.LineStyle = True
+       
+       ThisWorkbook.Worksheets(3).Range("E" & nom) = myArray(i, 18)
+       ThisWorkbook.Worksheets(3).Range("E" & nom).Borders.LineStyle = True
+       
+       ThisWorkbook.Worksheets(3).Range("F" & nom).Merge
+       ThisWorkbook.Worksheets(3).Range("F" & nom) = myArray(i, 19)
+       ThisWorkbook.Worksheets(3).Range("F" & nom).Borders.LineStyle = True
+       
+       
+       ThisWorkbook.Worksheets(3).Range("G" & nom & ":" & "H" & nom).Merge
+       ThisWorkbook.Worksheets(3).Range("G" & nom) = myArray(i, 10)
+       ThisWorkbook.Worksheets(3).Range("G" & nom & ":" & "H" & nom).Borders.LineStyle = True
+       
+       ThisWorkbook.Worksheets(3).Range("I" & nom & ":" & "J" & nom).Merge
+       ThisWorkbook.Worksheets(3).Range("I" & nom) = myArray(i, 11)
+       ThisWorkbook.Worksheets(3).Range("I" & nom & ":" & "J" & nom).Borders.LineStyle = True
+       
+       ThisWorkbook.Worksheets(3).Range("K" & nom & ":" & "L" & nom).Merge
+       ThisWorkbook.Worksheets(3).Range("K" & nom) = myArray(i, 12)
+       ThisWorkbook.Worksheets(3).Range("K" & nom & ":" & "L" & nom).Borders.LineStyle = True
+       
+       ThisWorkbook.Worksheets(3).Range("M" & nom & ":" & "O" & nom).Merge
+       ThisWorkbook.Worksheets(3).Range("M" & nom) = myArray(i, 13)
+       ThisWorkbook.Worksheets(3).Range("M" & nom & ":" & "O" & nom).Borders.LineStyle = True
+       
+       If str_error = 1 Then
+        'ThisWorkbook.Worksheets(3).Range("A" & nom & ":" & "O" & nom).Interior.Color = 255
+       End If
+       
+       
+       nom = nom + 1
+       nom_pp = nom_pp + 1
+       
+    End If
+    Next i
+       
+       
+          'Заполняем шапку
+
+    
+    ThisWorkbook.Worksheets(3).Range("D4") = sklad
+    If sklad1 = 1 Then
+        ThisWorkbook.Worksheets(3).Range("D4" & ":" & "I4").Interior.Color = 255
+    End If
+    'ThisWorkbook.Worksheets(3).Range("D6") = st
+    'ThisWorkbook.Worksheets(3).Range("D8") = gruz
+    'ThisWorkbook.Worksheets(3).Range("D10") = Post
+    'ThisWorkbook.Worksheets(3).Range("D12") = vagon
+    'ThisWorkbook.Worksheets(3).Range("D16") = ttd
+    ThisWorkbook.Worksheets(3).Range("D6") = data_r
+    If data_r1 = 1 Then
+        ThisWorkbook.Worksheets(3).Range("D6" & ":" & "I6").Interior.Color = 255
+    End If
+    'nom_a = ""
+    ThisWorkbook.Worksheets(3).Range("H1") = nom_akt
+    If nom_akt1 = 1 Then
+        ThisWorkbook.Worksheets(3).Range("H1" & ":" & "I1").Interior.Color = 255
+    End If
+    ThisWorkbook.Worksheets(3).Range("E2") = "от " & data_akt & " г."
+    If data_akt1 = 1 Then
+        ThisWorkbook.Worksheets(3).Range("E2" & ":" & "I2").Interior.Color = 255
+    End If
+    On Error GoTo 0
+ 
+ 
+     'Заполняем подвал
+    nom = nom + 2
+    ThisWorkbook.Worksheets(3).Range("A" & nom) = "Приемосдатчик"
+    ThisWorkbook.Worksheets(3).Range("D" & nom & ":" & "F" & nom).Borders(xlEdgeBottom).Weight = xlThin
+    ThisWorkbook.Worksheets(3).Range("G" & nom) = p7
+    If p71 = 1 Then
+        ThisWorkbook.Worksheets(3).Range("G" & nom).Interior.Color = 255
+    End If
+    
+    nom = nom + 2
+    ThisWorkbook.Worksheets(3).Range("A" & nom) = "Заведующий складом"
+    ThisWorkbook.Worksheets(3).Range("D" & nom & ":" & "F" & nom).Borders(xlEdgeBottom).Weight = xlThin
+    ThisWorkbook.Worksheets(3).Range("G" & nom) = p8
+    If p81 = 1 Then
+        ThisWorkbook.Worksheets(3).Range("G" & nom).Interior.Color = 255
+    End If
+    
+    nom = nom + 2
+    ThisWorkbook.Worksheets(3).Range("A" & nom) = "Инженер"
+    ThisWorkbook.Worksheets(3).Range("D" & nom & ":" & "F" & nom).Borders(xlEdgeBottom).Weight = xlThin
+    ThisWorkbook.Worksheets(3).Range("G" & nom) = p9
+    If p91 = 1 Then
+        ThisWorkbook.Worksheets(3).Range("G" & nom).Interior.Color = 255
+    End If
+
+    
+End Sub
