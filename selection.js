@@ -7,6 +7,7 @@ selection.ForEach((x) => {
     endRow = x.GetRow(); 
 });
 
+
 //Получаем массив с номерами всех выбранных строк
 for (startRow; startRow < endRow + 2; startRow++) {
     rowsArr.push(startRow);
